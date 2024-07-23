@@ -1,6 +1,7 @@
 const express = require("express");
 const { users } = require("../utils/data");
 const { matches, getUserById } = require("../utils/fns");
+const { addUserValidator, updateUserValidator } = require("../validators/user");
 
 const usersRouter = express.Router();
 
@@ -11,7 +12,7 @@ usersRouter.get("/users", (req, res) => {
   });
 });
 
-usersRouter.post("/users", (req, res) => {
+usersRouter.post("/users", addUserValidator, (req, res) => {
   const newUser = req.body;
   users.push(newUser);
   res.status(201).json({
@@ -20,7 +21,7 @@ usersRouter.post("/users", (req, res) => {
   });
 });
 
-usersRouter.put("/users/:id", (req, res) => {
+usersRouter.put("/users/:id", updateUserValidator, (req, res) => {
   const id = req.params.id;
   const data = req.body;
   const index = users.findIndex((user) => user.id === Number(id));

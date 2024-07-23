@@ -1,5 +1,9 @@
 const express = require("express");
 const { products } = require("../utils/data");
+const {
+  addProductValidator,
+  updateProductValidator,
+} = require("../validators/product");
 
 const productsRouter = express.Router();
 
@@ -10,7 +14,7 @@ productsRouter.get("/products", (req, res) => {
   });
 });
 
-productsRouter.post("/products", (req, res) => {
+productsRouter.post("/products", addProductValidator, (req, res) => {
   const newProduct = req.body;
   products.push(newProduct);
   res.status(201).json({
@@ -19,7 +23,7 @@ productsRouter.post("/products", (req, res) => {
   });
 });
 
-productsRouter.put("/products/:id", (req, res) => {
+productsRouter.put("/products/:id", updateProductValidator, (req, res) => {
   const id = req.params.id;
   const data = req.body;
   const index = products.findIndex((product) => product.id === Number(id));
